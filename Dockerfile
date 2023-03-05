@@ -1,17 +1,24 @@
-# Use the official Python image as the base image
-FROM python:3.11.0
+FROM python:3.8-slim AS bot
 
-# Set the working directory in the container
-WORKDIR /app
+ENV PYTHONFAULTHANDLER=1
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONHASHSEED=random
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PIP_NO_CACHE_DIR=off
+ENV PIP_DISABLE_PIP_VERSION_CHECK=on
+ENV PIP_DEFAULT_TIMEOUT=100
 
-# Copy the application files into the working directory
-COPY . .
+# Env vars
+ENV TELEGRAM_TOKEN ${TELEGRAM_TOKEN}
 
-# Install the application dependencies
-RUN pip install -r requirements.txt
+RUN apt-get update
+RUN apt-get install -y python3 python3-pip python-dev build-essential python3-venv
 
-# Define the entry point for the container
-CMD ["python", "main.py"]
+RUN mkdir -p /codebase /storage
+ADD . /codebase
+WORKDIR /codebase
 
-# Setting a port for your app communications with Telegram servers.
-EXPOSE 443/tcp
+RUN pip3 install -r requirements.txt
+RUN chmod +x /codebase/bot.py
+
+CMD python3 /codebase/bot.py;
