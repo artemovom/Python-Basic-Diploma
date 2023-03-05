@@ -1,4 +1,4 @@
-FROM python:3.9-slim AS bot
+FROM python:3.11-slim AS bot
 
 ENV PYTHONFAULTHANDLER=1
 ENV PYTHONUNBUFFERED=1
@@ -19,6 +19,6 @@ ADD . /codebase
 WORKDIR /codebase
 
 RUN pip3 install -r requirements.txt
-RUN chmod +x /codebase/bot.py
+RUN chmod +x /codebase/main.py
 
-CMD python3 /codebase/bot.py;
+CMD python3 /codebase/main.py;
