@@ -1,5 +1,5 @@
 # Use the official Python image as the base image
-FROM python:3.11
+FROM python:3.11.0
 
 # Set the working directory in the container
 WORKDIR /app
@@ -10,7 +10,8 @@ COPY . /app
 # Install the application dependencies
 RUN pip install -r requirements.txt
 
-EXPOSE 8000/tcp
-
 # Define the entry point for the container
 CMD ["python", "main.py"]
+
+# Setting a port for your app communications with Telegram servers.
+EXPOSE 80/tcp
