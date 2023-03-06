@@ -1,10 +1,13 @@
-FROM python:3.10.4-slim
+# Use the official Python image as the base image
+FROM python:3.11
+
+# Set the working directory in the container
 WORKDIR /app
+
+# Copy the application files into the working directory
 COPY . .
-RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir poetry
 
-RUN poetry config virtualenvs.create false
-RUN poetry install
+# Install the application dependencies
+RUN pip install -r requirements.txt
 
-CMD [ "python", "main.py" ]
+CMD ["python", "main.py"]
