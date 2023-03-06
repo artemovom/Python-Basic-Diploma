@@ -1,24 +1,10 @@
-FROM python:3.11-slim AS bot
+FROM python:3.10.4-slim
+WORKDIR /app
+COPY . .
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir poetry
 
-ENV PYTHONFAULTHANDLER=1
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONHASHSEED=random
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PIP_NO_CACHE_DIR=off
-ENV PIP_DISABLE_PIP_VERSION_CHECK=on
-ENV PIP_DEFAULT_TIMEOUT=100
+RUN poetry config virtualenvs.create false
+RUN poetry install
 
-# Env vars
-ENV TELEGRAM_TOKEN ${TELEGRAM_TOKEN}
-
-RUN apt-get update
-RUN apt-get install -y python3 python3-pip python-dev build-essential python3-venv
-
-RUN mkdir -p /codebase /storage
-ADD . /codebase
-WORKDIR /codebase
-
-RUN pip3 install -r requirements.txt
-RUN chmod +x /codebase/main.py
-
-CMD python3 /codebase/main.py;
+CMD [ "python", "main.py" ]
