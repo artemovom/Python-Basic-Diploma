@@ -15,7 +15,7 @@ from tg_API.utils.start import start
 from tg_API.utils.stop import stop
 from tg_API.common.markup_and_output import send_message_with_markup, send_message
 from tg_API.common.printing_records import price_range_read, output_records, output_records_history
-from database.core import computer_components, crud
+from database.core import computer_components, update, crud
 from database.common.models import db
 from log.logging import Logging
 
@@ -305,13 +305,14 @@ def database_loading() -> None:
     db_count = crud.count()
 
     # Заполнение таблицы Update в базе
-    # db_load_update_table = ComputerComponentDatabase.load_update_table()
-    # update_table = list()
-    # i_date: date = datetime.now().date()
-    # for key in computer_components.keys():
-    #     update_table.append({'computer_component': key, 'update_date': i_date})
-    #     i_date += timedelta(days=1)
-    # db_load_update_table(update_table)
+    if not db_count(db, update['update']) == len(computer_components):
+        db_load_update_table = ComputerComponentDatabase.load_update_table()
+        update_table = list()
+        i_date: date = datetime.now().date()
+        for key in computer_components.keys():
+            i_date += timedelta(days=1)
+            update_table.append({'computer_component': key, 'update_date': i_date})
+        db_load_update_table(update_table)
 
     while True:
         update_table = db_read_update_table()

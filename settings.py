@@ -26,7 +26,7 @@ class SiteSettings(BaseSettings):
     """
     api_key: SecretStr = getenv("SITE_API", None)
     host_api: StrictStr = getenv("HOST_API", None)
-    token: SecretStr = getenv("TELEGRAM_TOKEN", None)
+    token: SecretStr = getenv("TOKEN_BOT", None)
     db_path: StrictStr = getenv("DB_PATH", None)
     db_update_frequency: int = getenv("DB_UPDATE_FREQUENCY", None)
     query_intervals: List[int] = getenv("QUERY_INTERVALS", None)
